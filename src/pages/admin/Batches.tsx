@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { BookOpen, Users, Clock, Calendar, Plus } from 'lucide-react';
-import AddBatchModal from '../components/AddBatchModal';
-import ManageBatchModal from '../components/ManageBatchModal';
-import BatchDetailsModal from '../components/BatchDetailsModal';
+import AddBatchModal from '../../components/AddBatchModal';
+import ManageBatchModal from '../../components/ManageBatchModal';
+import BatchDetailsModal from '../../components/BatchDetailsModal';
 
 const batchesData = [
   {

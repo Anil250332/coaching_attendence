@@ -10,7 +10,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line, PieChart, Pie, Cell
 } from 'recharts';
-import RecordPaymentModal from '../components/RecordPaymentModal';
+import RecordPaymentModal from '../../components/RecordPaymentModal';
 
 const monthlyRevenueData = [
   { name: 'Jan', Collected: 1850000, Target: 1950000 },
@@ -290,7 +290,12 @@ const Fees: React.FC = () => {
                       WhatsApp
                     </button>
                     <button 
-                      onClick={() => handleRecordPayment({ id: `STU-${payment.id + 1000}`, name: payment.name, amount: payment.amount })}
+                      onClick={() => handleRecordPayment({ 
+                        id: `STU-${payment.id + 1000}`, 
+                        name: payment.name, 
+                        totalAmount: payment.course.includes('IIT-JEE') ? 120000 : payment.course.includes('NEET') ? 95000 : payment.course.includes('SSC') ? 60000 : 45000, 
+                        dueAmount: payment.amount 
+                      })}
                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center shadow-sm"
                     >
                       Record Payment

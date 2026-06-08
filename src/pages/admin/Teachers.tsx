@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, BookOpen, Users, Star, Mail, Phone } from 'lucide-react';
-import AddTeacherModal from '../components/AddTeacherModal';
-import ScheduleClassModal from '../components/ScheduleClassModal';
+import AddTeacherModal from '../../components/AddTeacherModal';
+import ScheduleClassModal from '../../components/ScheduleClassModal';
 
 interface Teacher {
   id: string;

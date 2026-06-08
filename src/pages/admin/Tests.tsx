@@ -11,9 +11,9 @@ import {
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
-import CreateTestModal from '../components/CreateTestModal';
-import AddQuestionsModal from '../components/AddQuestionsModal';
-import EnterResultsModal from '../components/EnterResultsModal';
+import CreateTestModal from '../../components/CreateTestModal';
+import AddQuestionsModal from '../../components/AddQuestionsModal';
+import EnterResultsModal from '../../components/EnterResultsModal';
 
 const performanceData = [
   { name: 'Jan', score: 72 },

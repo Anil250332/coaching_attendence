@@ -7,7 +7,8 @@ interface RecordPaymentModalProps {
   defaultStudent?: {
     id: string;
     name: string;
-    amount: number;
+    totalAmount?: number;
+    dueAmount?: number;
   };
 }
 
@@ -63,15 +64,41 @@ const RecordPaymentModal: React.FC<RecordPaymentModalProps> = ({ isOpen, onClose
               />
             </div>
 
-            {/* Amount */}
+            {/* Total Fee & Due Amount Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[13px] font-semibold text-gray-800 mb-1.5">
+                  Total Course Fee (₹)
+                </label>
+                <input 
+                  type="text" 
+                  disabled
+                  value={defaultStudent ? (defaultStudent.totalAmount || 120000).toLocaleString('en-IN') : "1,20,000"}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500 font-medium cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block text-[13px] font-semibold text-gray-800 mb-1.5">
+                  Due Amount (₹)
+                </label>
+                <input 
+                  type="text" 
+                  disabled
+                  value={defaultStudent ? (defaultStudent.dueAmount || 45000).toLocaleString('en-IN') : "45,000"}
+                  className="w-full px-4 py-2.5 rounded-lg border border-gray-200 bg-gray-50 text-sm text-red-500 font-semibold cursor-not-allowed"
+                />
+              </div>
+            </div>
+
+            {/* Amount to Pay */}
             <div>
               <label className="block text-[13px] font-semibold text-gray-800 mb-1.5">
-                Amount (₹) <span className="text-red-500">*</span>
+                Amount to Pay (₹) <span className="text-red-500">*</span>
               </label>
               <input 
                 type="number" 
-                defaultValue={defaultStudent?.amount || 45000}
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-gray-900"
+                defaultValue={defaultStudent ? defaultStudent.dueAmount : 45000}
+                className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-gray-900 font-semibold"
               />
             </div>
 

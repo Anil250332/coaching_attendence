@@ -6,9 +6,7 @@ import {
   Clock, 
   Plus, 
   LayoutGrid, 
-  List as ListIcon,
-  Phone,
-  MessageSquare
+  List as ListIcon
 } from 'lucide-react';
 import {
   BarChart,
@@ -25,8 +23,8 @@ import {
   Line,
   Legend
 } from 'recharts';
-import AddLeadModal from '../components/AddLeadModal';
-import LeadDetailsModal from '../components/LeadDetailsModal';
+import AddLeadModal from '../../components/AddLeadModal';
+import LeadDetailsModal from '../../components/LeadDetailsModal';
 
 const statsData = [
   { title: 'Total Leads', value: '7', icon: Users, color: 'text-blue-500', bgColor: 'bg-blue-50' },
@@ -258,12 +256,7 @@ const Leads: React.FC = () => {
                         >
                           View Details
                         </button>
-                        <button className="p-1.5 text-gray-400 hover:text-green-600 bg-gray-50 hover:bg-green-50 rounded-md transition-colors shrink-0" title="Call">
-                          <Phone className="w-4 h-4" />
-                        </button>
-                        <button className="p-1.5 text-gray-400 hover:text-blue-600 bg-gray-50 hover:bg-blue-50 rounded-md transition-colors shrink-0" title="Message">
-                          <MessageSquare className="w-4 h-4" />
-                        </button>
+                       
                       </div>
                     </td>
                   </tr>

@@ -8,10 +8,10 @@ import {
   Plus, 
   Search
 } from 'lucide-react';
-import AddStudentModal from '../components/AddStudentModal';
-import { useAppSelector } from '../store/hooks';
-import EmptyState from '../components/EmptyState';
-import Pagination from '../components/Pagination';
+import AddStudentModal from '../../components/AddStudentModal';
+import { useAppSelector } from '../../store/hooks';
+import EmptyState from '../../components/EmptyState';
+import Pagination from '../../components/Pagination';
 
 const statsData = [
   { title: 'Total Students', value: '2,847', change: '+12.5%', isPositive: true, icon: Users, color: 'text-blue-500', bgColor: 'bg-blue-50' },

@@ -25,8 +25,8 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis
 } from 'recharts';
-import { useAppSelector } from '../store/hooks';
-import EmptyState from '../components/EmptyState';
+import { useAppSelector } from '../../store/hooks';
+import EmptyState from '../../components/EmptyState';
 
 const performanceData = [
   { month: 'Jan', score: 72 },

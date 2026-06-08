@@ -17,7 +17,7 @@ import {
   Tooltip,
   ResponsiveContainer
 } from 'recharts';
-import NewAdmissionModal from '../components/NewAdmissionModal';
+import NewAdmissionModal from '../../components/NewAdmissionModal';
 
 const statsData = [
   { title: 'Total Admissions', value: '2,847', change: '+12.5%', isPositive: true, icon: UserPlus, color: 'text-blue-500', bgColor: 'bg-blue-50' },

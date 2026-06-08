@@ -9,7 +9,11 @@ const Login: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
+    if (isAdmin) {
+      navigate('/dashboard');
+    } else {
+      navigate('/teacher/dashboard');
+    }
   };
 
   return (
@@ -50,7 +54,7 @@ const Login: React.FC = () => {
             }`}
           >
             <User className="w-4 h-4" />
-            Student Login
+            Teacher Login
           </button>
         </div>
 
@@ -68,7 +72,7 @@ const Login: React.FC = () => {
               </div>
               <input
                 type="email"
-                placeholder={isAdmin ? "admin@coachmaster.com" : "student@example.com"}
+                placeholder={isAdmin ? "admin@coachmaster.com" : "teacher@example.com"}
                 className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all outline-none text-gray-900 placeholder-gray-400"
                 required
               />
