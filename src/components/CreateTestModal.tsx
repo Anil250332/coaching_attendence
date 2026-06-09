@@ -32,7 +32,7 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({ isOpen, onClose, onCr
         </div>
 
         {/* Scrollable Content */}
-        <div className="p-4 sm:p-6 overflow-y-auto custom-scrollbar">
+        <div className="p-4 sm:p-6 overflow-y-auto custom-scrollbar flex-1">
           <div className="space-y-6">
             
             {/* Test Name */}
@@ -136,6 +136,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({ isOpen, onClose, onCr
                 </label>
                 <input 
                   type="number" 
+                  min="1"
+                  onKeyDown={(e) => {
+                    if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === '.') {
+                      e.preventDefault();
+                    }
+                  }}
                   defaultValue={3}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-gray-900 bg-white"
                 />
@@ -150,6 +156,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({ isOpen, onClose, onCr
                 </label>
                 <input 
                   type="number" 
+                  min="1"
+                  onKeyDown={(e) => {
+                    if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === '.') {
+                      e.preventDefault();
+                    }
+                  }}
                   defaultValue={100}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-gray-900 bg-white"
                 />
@@ -162,6 +174,12 @@ const CreateTestModal: React.FC<CreateTestModalProps> = ({ isOpen, onClose, onCr
                 </label>
                 <input 
                   type="number" 
+                  min="0"
+                  onKeyDown={(e) => {
+                    if (e.key === '-' || e.key === 'e' || e.key === '+' || e.key === '.') {
+                      e.preventDefault();
+                    }
+                  }}
                   defaultValue={40}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all text-sm text-gray-900 bg-white"
                 />
