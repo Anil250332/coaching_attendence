@@ -39,7 +39,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 58,
     lastTestScore: 46,
     riskScore: 91,
-    predictedRank: 'AIR 22,000',
+    predictedRank: '22,000',
     weakLessons: 'Physics, Chemistry',
     action: 'Parent Call Required',
     status: 'Critical',
@@ -54,7 +54,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 62,
     lastTestScore: 52,
     riskScore: 85,
-    predictedRank: 'AIR 18,500',
+    predictedRank: '18,500',
     weakLessons: 'Physics',
     action: 'Counseling Required',
     status: 'Critical',
@@ -69,7 +69,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 68,
     lastTestScore: 58,
     riskScore: 72,
-    predictedRank: 'AIR 15,000',
+    predictedRank: '15,000',
     weakLessons: 'Mathematics',
     action: 'Extra Classes',
     status: 'Warning',
@@ -84,7 +84,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 74,
     lastTestScore: 64,
     riskScore: 61,
-    predictedRank: 'AIR 28,000',
+    predictedRank:'28,000',
     weakLessons: 'Chemistry',
     action: 'Study Plan Revision',
     status: 'Warning',
@@ -99,7 +99,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 35,
     lastTestScore: 42,
     riskScore: 95,
-    predictedRank: 'AIR 35,000',
+    predictedRank: '35,000',
     weakLessons: 'Physics',
     action: 'Parent Call Required',
     status: 'Critical',
@@ -114,7 +114,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 38,
     lastTestScore: 45,
     riskScore: 92,
-    predictedRank: 'AIR 29,000',
+    predictedRank: '29,000',
     weakLessons: 'Chemistry',
     action: 'Counseling Required',
     status: 'Critical',
@@ -129,7 +129,7 @@ const studentsRiskData: StudentRisk[] = [
     attendance: 32,
     lastTestScore: 39,
     riskScore: 96,
-    predictedRank: 'AIR 40,000',
+    predictedRank: '40,000',
     weakLessons: 'Mathematics',
     action: 'Parent Call Required',
     status: 'Critical',
@@ -139,9 +139,9 @@ const studentsRiskData: StudentRisk[] = [
 ];
 
 const rankPredictions = [
-  { name: 'Aarav Sharma', currentMarks: 285, jeeRank: 'AIR 2,500', neetRank: '-', probability: 92 },
-  { name: 'Diya Patel', currentMarks: 648, jeeRank: '-', neetRank: 'AIR 1,200', probability: 95 },
-  { name: 'Vivek Kumar', currentMarks: 258, jeeRank: 'AIR 4,800', neetRank: '-', probability: 85 }
+  { name: 'Aarav Sharma', currentMarks: 285, jeeRank: '2,500', neetRank: '-', probability: 92 },
+  { name: 'Diya Patel', currentMarks: 648, jeeRank: '-', neetRank: '1,200', probability: 95 },
+  { name: 'Vivek Kumar', currentMarks: 258, jeeRank: '4,800', neetRank: '-', probability: 85 }
 ];
 
 const batchPerformance = [
