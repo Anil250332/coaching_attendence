@@ -575,7 +575,7 @@ const TeacherNotices: React.FC = () => {
                   
                   <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex flex-wrap items-center gap-2 pr-8 sm:pr-0">
-                      <h4 className="font-extrabold text-gray-800 text-[15px] break-words">{notice.title}</h4>
+                      <h4 className="font-extrabold text-gray-800 text-[15px] wrap-break-word">{notice.title}</h4>
                       
                       <div className="flex flex-wrap items-center gap-1.5">
                         <span className={`px-2 py-0.5 text-[9px] font-extrabold rounded-md uppercase tracking-wider ${getPriorityBadgeStyle(notice.priority)}`}>
@@ -593,7 +593,7 @@ const TeacherNotices: React.FC = () => {
                     </div>
                   </div>
 
-                  <p className="text-gray-600 text-sm font-medium leading-relaxed max-w-3xl break-words">
+                  <p className="text-gray-600 text-sm font-medium leading-relaxed max-w-3xl wrap-break-word">
                     {notice.description}
                   </p>
 

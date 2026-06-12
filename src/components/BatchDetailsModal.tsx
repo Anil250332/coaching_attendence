@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Users, Clock, Calendar, User } from 'lucide-react';
+import { X, Users, Clock, Calendar, User, BookOpen } from 'lucide-react';
 
 interface BatchDetailsModalProps {
   isOpen: boolean;
@@ -82,6 +82,40 @@ const BatchDetailsModal: React.FC<BatchDetailsModalProps> = ({ isOpen, onClose, 
                 <span className="text-[13px] font-semibold text-gray-500">Teacher</span>
               </div>
               <p className="text-[14px] font-bold text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">{batchData.teacher}</p>
+            </div>
+          </div>
+
+          {/* Subjects & Teachers Section */}
+          <div>
+            <h3 className="text-[16px] font-bold text-gray-900 mb-4 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-blue-600" />
+              Subjects & Assigned Teachers
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(batchData.subjects || (
+                batchData.course === 'IIT-JEE' ? [
+                  { subjectName: 'Physics', teacherName: batchData.teacher || 'Dr. Rajesh Kumar' },
+                  { subjectName: 'Chemistry', teacherName: 'Prof. Meera Singh' },
+                  { subjectName: 'Mathematics', teacherName: 'Mr. Amit Sharma' }
+                ] : batchData.course === 'NEET' ? [
+                  { subjectName: 'Physics', teacherName: 'Dr. Rajesh Kumar' },
+                  { subjectName: 'Chemistry', teacherName: batchData.teacher || 'Prof. Meera Singh' },
+                  { subjectName: 'Biology', teacherName: 'Ms. Priya Verma' }
+                ] : [
+                  { subjectName: 'General Studies', teacherName: batchData.teacher || 'Mr. Amit Sharma' },
+                  { subjectName: 'English', teacherName: 'Ms. Priya Verma' }
+                ]
+              )).map((sub: any, idx: number) => (
+                <div key={idx} className="bg-gray-50 border border-gray-100 rounded-xl p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-[14px] shrink-0">
+                    {sub.subjectName ? sub.subjectName[0].toUpperCase() : 'S'}
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] font-bold text-gray-900">{sub.subjectName}</h4>
+                    <p className="text-[12px] font-medium text-gray-500">{sub.teacherName}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

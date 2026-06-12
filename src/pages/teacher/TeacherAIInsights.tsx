@@ -136,7 +136,7 @@ const TeacherAIInsights: React.FC = () => {
       </div>
 
       {/* Average Batch Attendance (Gradient purple/pink container card) */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#B936F5] via-[#DE3FF2] to-[#F23FD4] p-6 sm:p-8 shadow-md text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-[#B936F5] via-[#DE3FF2] to-[#F23FD4] p-6 sm:p-8 shadow-md text-white">
         <div className="relative z-10 space-y-6">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-5.5 h-5.5 text-white" />
@@ -281,7 +281,7 @@ const TeacherAIInsights: React.FC = () => {
             >
               <div className="space-y-1 flex-1 min-w-0">
                 <h4 className="font-bold text-gray-800 text-[14px]">{rec.action}</h4>
-                <p className="text-gray-400 text-xs font-semibold leading-relaxed break-words">{rec.description}</p>
+                <p className="text-gray-400 text-xs font-semibold leading-relaxed wrap-break-word">{rec.description}</p>
               </div>
               <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-blue-500 transition-colors self-center shrink-0" />
             </div>

@@ -16,6 +16,8 @@ import Teachers from './pages/admin/Teachers'
 import Whatsapp from './pages/admin/Whatsapp'
 import Reports from './pages/admin/Reports'
 import Settings from './pages/admin/Settings'
+import SyllabusManager from './pages/admin/SyllabusManager'
+
 
 // Teacher layout & page imports
 import TeacherLayout from './layouts/TeacherLayout'
@@ -29,6 +31,8 @@ import TeacherNotices from './pages/teacher/TeacherNotices'
 import TeacherAIInsights from './pages/teacher/TeacherAIInsights'
 import TeacherReports from './pages/teacher/TeacherReports'
 import TeacherProfile from './pages/teacher/TeacherProfile'
+import TeacherSyllabus from './pages/teacher/TeacherSyllabus'
+
 
 import { Toaster } from 'react-hot-toast'
 import './App.css'
@@ -57,6 +61,7 @@ function App() {
           <Route path="/teachers" element={<Teachers />} />
           <Route path="/whatsapp" element={<Whatsapp />} />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/syllabus" element={<SyllabusManager />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
 
@@ -64,6 +69,7 @@ function App() {
         <Route element={<TeacherLayout />}>
           <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
           <Route path="/teacher/batches" element={<TeacherBatches />} />
+          <Route path="/teacher/syllabus" element={<TeacherSyllabus />} />
           <Route path="/teacher/students" element={<TeacherStudents />} />
           <Route path="/teacher/attendance" element={<TeacherAttendance />} />
           <Route path="/teacher/tests" element={<TeacherTests />} />

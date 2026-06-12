@@ -690,7 +690,7 @@ const AIAnalytics: React.FC = () => {
                       <h4 className="font-bold text-gray-900 text-[14px]">{teacher.name}</h4>
                       <p className="text-[11px] text-gray-500 font-semibold mt-0.5">{teacher.students} students assigned</p>
                     </div>
-                    <span className="ml-auto text-emerald-500 text-[12px] font-bold flex items-center gap-0.5 bg-[#F5F3FF] text-[#7C3AED] border border-[#EDE9FE] px-2 py-0.5 rounded-lg">
+                    <span className="ml-auto text-[12px] font-bold flex items-center gap-0.5 bg-[#F5F3FF] text-[#7C3AED] border border-[#EDE9FE] px-2 py-0.5 rounded-lg">
                       <TrendingUp className="w-3.5 h-3.5 text-[#7C3AED]" />
                       +{teacher.improvement}%
                     </span>
@@ -955,7 +955,7 @@ const AIAnalytics: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 transition-all">
           <div className="bg-white border border-gray-100 rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden transform scale-100 transition-transform">
             {/* Header */}
-            <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-purple-50/50 to-blue-50/50">
+            <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-linear-to-r from-purple-50/50 to-blue-50/50">
               <div className="flex items-center gap-2.5">
                 <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
                   <MessageSquare className="w-5 h-5 fill-purple-100" />

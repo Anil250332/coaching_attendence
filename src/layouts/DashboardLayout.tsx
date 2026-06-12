@@ -21,7 +21,8 @@ import {
   ChevronDown,
   User,
   UserCog,
-  LogOut
+  LogOut,
+  Clock
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -36,6 +37,7 @@ const sidebarLinks = [
   { name: 'Fees Management', icon: IndianRupee, path: '/fees' },
   { name: 'Tests & Exams', icon: FileText, path: '/tests' },
   { name: 'AI Analytics', icon: BrainCircuit, path: '/analytics' },
+  { name: 'Syllabus Manager', icon: BookOpen, path: '/syllabus' },
   { name: 'WhatsApp Automation', icon: MessageCircle, path: '/whatsapp' },
   { name: 'Reports', icon: BarChart2, path: '/reports' },
   { name: 'Settings', icon: Settings, path: '/settings', hasDropdown: true },
@@ -98,7 +100,7 @@ const DashboardLayout: React.FC = () => {
 
             if (link.hasDropdown) {
               const queryParams = new URLSearchParams(location.search);
-              const isStaffTab = queryParams.get('tab') === 'staff';
+              const activeTab = queryParams.get('tab') || 'profile';
               return (
                 <div key={link.name} className="space-y-1">
                   <button
@@ -117,7 +119,7 @@ const DashboardLayout: React.FC = () => {
                       <Link
                         to="/settings?tab=profile"
                         onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${location.pathname === '/settings' && !isStaffTab
+                        className={`flex items-center px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${location.pathname === '/settings' && activeTab === 'profile'
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
                           }`}
@@ -126,9 +128,20 @@ const DashboardLayout: React.FC = () => {
                         Profile Settings
                       </Link>
                       <Link
+                        to="/settings?tab=schedule"
+                        onClick={() => setIsMobileOpen(false)}
+                        className={`flex items-center px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${location.pathname === '/settings' && activeTab === 'schedule'
+                            ? 'bg-blue-50 text-blue-600'
+                            : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
+                          }`}
+                      >
+                        <Clock className="w-3.5 h-3.5 mr-2 shrink-0" />
+                        Institute Schedule
+                      </Link>
+                      <Link
                         to="/settings?tab=staff"
                         onClick={() => setIsMobileOpen(false)}
-                        className={`flex items-center px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${location.pathname === '/settings' && isStaffTab
+                        className={`flex items-center px-4 py-2.5 rounded-lg text-xs font-bold transition-colors ${location.pathname === '/settings' && activeTab === 'staff'
                             ? 'bg-blue-50 text-blue-600'
                             : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'
                           }`}

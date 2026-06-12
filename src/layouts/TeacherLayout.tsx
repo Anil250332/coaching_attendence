@@ -22,6 +22,7 @@ import toast from 'react-hot-toast';
 const sidebarLinks = [
   { name: 'Dashboard', icon: LayoutDashboard, path: '/teacher/dashboard' },
   { name: 'My Batches', icon: BookOpen, path: '/teacher/batches' },
+  { name: 'Syllabus Tracker', icon: BookOpen, path: '/teacher/syllabus' },
   { name: 'Students', icon: GraduationCap, path: '/teacher/students' },
   { name: 'Attendance', icon: CalendarCheck, path: '/teacher/attendance' },
   { name: 'Tests & Exams', icon: FileText, path: '/teacher/tests' },

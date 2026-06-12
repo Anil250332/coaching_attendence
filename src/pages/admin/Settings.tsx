@@ -13,7 +13,10 @@ import {
   Plus,
   Trash2,
   Shield,
-  X
+  X,
+  Clock,
+  Timer,
+  Calendar
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
@@ -62,6 +65,17 @@ const Settings: React.FC = () => {
   const [showCurrentPass, setShowCurrentPass] = useState(false);
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
+
+  // Schedule settings state
+  const [openTime, setOpenTime] = useState('08:00');
+  const [closeTime, setCloseTime] = useState('20:00');
+  const [periodDuration, setPeriodDuration] = useState('60'); // in minutes
+  const [lunchTime, setLunchTime] = useState('13:00');
+  const [lunchDuration, setLunchDuration] = useState('45'); // in minutes
+  const [breakDuration, setBreakDuration] = useState('10'); // in minutes
+  const [gracePeriod, setGracePeriod] = useState('15'); // in minutes
+  const [weeklyOff, setWeeklyOff] = useState('Sunday');
+  const [lecturesPerDay, setLecturesPerDay] = useState('5');
 
   // Staff Management state
   const [staffList, setStaffList] = useState<StaffUser[]>([
@@ -127,6 +141,11 @@ const Settings: React.FC = () => {
     setConfirmPassword('');
   };
 
+  const handleScheduleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast.success('Institute schedule settings updated successfully!');
+  };
+
   const handleAddStaffSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newStaffName.trim() || !newStaffEmail.trim() || !newStaffPhone.trim() || !newStaffPassword.trim()) {
@@ -162,6 +181,98 @@ const Settings: React.FC = () => {
     toast.success(`Removed staff user: ${name}`);
   };
 
+  const generatePreviewPeriods = () => {
+    const periods = [];
+    const pDur = Number(periodDuration) || 0;
+    const bDur = Number(breakDuration) || 0;
+    const lDur = Number(lunchDuration) || 0;
+
+    if (!openTime || pDur <= 0) {
+      return [];
+    }
+
+    let [hours, minutes] = openTime.split(':').map(Number);
+    let currentMinutes = hours * 60 + minutes;
+
+    const [lunchH, lunchM] = (lunchTime || '13:00').split(':').map(Number);
+    const lunchStartMinutes = lunchH * 60 + lunchM;
+
+    const [closeH, closeM] = (closeTime || '20:00').split(':').map(Number);
+    const closeLimitMinutes = closeH * 60 + closeM;
+
+    const formatTime = (totalMin: number) => {
+      const h = Math.floor(totalMin / 60) % 24;
+      const m = totalMin % 60;
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const displayHours = h % 12 === 0 ? 12 : h % 12;
+      const displayMinutes = m < 10 ? `0${m}` : m;
+      return `${displayHours}:${displayMinutes} ${ampm}`;
+    };
+
+    const maxLecs = Number(lecturesPerDay) || 5;
+    for (let i = 1; i <= maxLecs; i++) {
+      if (currentMinutes >= closeLimitMinutes) {
+        break;
+      }
+
+      if (currentMinutes >= lunchStartMinutes && periods.filter(p => p.type === 'lunch').length === 0) {
+        const lEnd = currentMinutes + lDur;
+        if (currentMinutes < closeLimitMinutes) {
+          periods.push({
+            name: 'Lunch Break',
+            type: 'lunch',
+            time: `${formatTime(currentMinutes)} - ${formatTime(Math.min(lEnd, closeLimitMinutes))}`,
+            color: 'bg-orange-50 border-orange-100 text-orange-700'
+          });
+        }
+        currentMinutes = lEnd;
+        if (currentMinutes >= closeLimitMinutes) break;
+      }
+
+      const classStart = currentMinutes;
+      const classEnd = currentMinutes + pDur;
+
+      if (classStart < lunchStartMinutes && classEnd > lunchStartMinutes && periods.filter(p => p.type === 'lunch').length === 0) {
+        const lEnd = lunchStartMinutes + lDur;
+        if (lunchStartMinutes < closeLimitMinutes) {
+          periods.push({
+            name: 'Lunch Break ',
+            type: 'lunch',
+            time: `${formatTime(lunchStartMinutes)} - ${formatTime(Math.min(lEnd, closeLimitMinutes))}`,
+            color: 'bg-orange-50 border-orange-100 text-orange-700'
+          });
+        }
+        currentMinutes = lEnd;
+        if (currentMinutes >= closeLimitMinutes) break;
+        continue;
+      }
+
+      periods.push({
+        name: `Period ${i}`,
+        type: 'class',
+        time: `${formatTime(currentMinutes)} - ${formatTime(Math.min(currentMinutes + pDur, closeLimitMinutes))}`,
+        color: 'bg-blue-50 border-blue-100 text-blue-700'
+      });
+      currentMinutes += pDur;
+
+      if (currentMinutes >= closeLimitMinutes) break;
+
+      if (i < maxLecs) {
+        if (!(currentMinutes >= lunchStartMinutes && periods.filter(p => p.type === 'lunch').length === 0)) {
+          periods.push({
+            name: 'Short Break ',
+            type: 'break',
+            time: `${formatTime(currentMinutes)} - ${formatTime(Math.min(currentMinutes + bDur, closeLimitMinutes))}`,
+            color: 'bg-emerald-50 border-emerald-100 text-emerald-700'
+          });
+          currentMinutes += bDur;
+        }
+      }
+    }
+
+    return periods;
+  };
+
   return (
     <div className="space-y-8  mx-auto pb-12 px-4 sm:px-6">
       
@@ -181,7 +292,7 @@ const Settings: React.FC = () => {
         </div>
       </div>
 
-      {activeTab === 'staff' ? (
+      {activeTab === 'staff' && (
         // STAFF MANAGEMENT VIEW
         <div className="bg-white border max-w-6xl border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-xs">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-gray-100 pb-4">
@@ -397,9 +508,11 @@ const Settings: React.FC = () => {
             </div>
           )}
         </div>
-      ) : (
+      )}
+
+      {activeTab === 'profile' && (
         // PROFILE & SECURITY VIEW
-        <div className="flex flex-col max-w-4xl gap-6">
+        <div className="flex flex-col max-w-4xl gap-6 animate-in fade-in duration-200">
           
           {/* Form 1: Profile details card */}
           <div className="bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-xs hover:shadow-md transition-all duration-200">
@@ -566,6 +679,228 @@ const Settings: React.FC = () => {
             </form>
           </div>
 
+        </div>
+      )}
+
+      {activeTab === 'schedule' && (
+        // INSTITUTE SCHEDULE SETTINGS
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-6xl animate-in fade-in duration-200">
+          {/* Settings Form Column */}
+          <div className="lg:col-span-7 bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-xs">
+            <div className="flex items-center gap-3.5 mb-8 border-b border-gray-100 pb-4">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                <Clock className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-[18px] font-extrabold text-gray-900">Institute Schedule Settings</h3>
+                <p className="text-[12px] text-gray-400 font-bold mt-0.5">Configure operational hours and class configurations</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleScheduleSave} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Institute Open Time */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-gray-400" />
+                    Institute Opening Time
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={openTime}
+                    onChange={(e) => setOpenTime(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                  />
+                </div>
+
+                {/* Institute Close Time */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-gray-400" />
+                    Institute Closing Time
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={closeTime}
+                    onChange={(e) => setCloseTime(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Period Duration */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-gray-400" />
+                    Period Duration (Mins)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="15"
+                    max="180"
+                    value={periodDuration}
+                    onChange={(e) => setPeriodDuration(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                    placeholder="e.g. 60"
+                  />
+                </div>
+
+                {/* Break Duration */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-gray-400" />
+                    Break Time Duration (Mins)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    max="60"
+                    value={breakDuration}
+                    onChange={(e) => setBreakDuration(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                    placeholder="e.g. 10"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Lunch Start Time */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-gray-400" />
+                    Lunch Time (Start)
+                  </label>
+                  <input
+                    type="time"
+                    required
+                    value={lunchTime}
+                    onChange={(e) => setLunchTime(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                  />
+                </div>
+
+                {/* Lunch Duration */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-gray-400" />
+                    Lunch Duration (Mins)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="15"
+                    max="120"
+                    value={lunchDuration}
+                    onChange={(e) => setLunchDuration(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                    placeholder="e.g. 45"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Attendance Grace Period */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Timer className="w-4 h-4 text-gray-400" />
+                    Grace Period (Mins)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    max="60"
+                    value={gracePeriod}
+                    onChange={(e) => setGracePeriod(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                    placeholder="e.g. 15"
+                  />
+                </div>
+
+                {/* Weekly Off Day */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    Weekly Off Day
+                  </label>
+                  <select
+                    value={weeklyOff}
+                    onChange={(e) => setWeeklyOff(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none cursor-pointer"
+                  >
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {/* Lectures per Day */}
+                <div className="space-y-2">
+                  <label className="text-[13px] font-bold text-gray-700 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-gray-400" />
+                    Lectures per Day
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="1"
+                    max="20"
+                    value={lecturesPerDay}
+                    onChange={(e) => setLecturesPerDay(e.target.value)}
+                    className="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-xl px-4.5 py-3 text-[13.5px] text-gray-900 font-medium focus:outline-hidden focus:border-blue-500 focus:bg-white transition-all outline-none"
+                    placeholder="e.g. 5"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-3">
+                <button
+                  type="submit"
+                  className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white px-6 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md shadow-blue-100"
+                >
+                  Save Schedule Config
+                </button>
+              </div>
+            </form>
+          </div>
+
+          {/* Visual Timeline Preview Column */}
+          <div className="lg:col-span-5 bg-white border border-[#E5E7EB] rounded-2xl p-6 sm:p-8 shadow-xs flex flex-col h-fit">
+            <h3 className="text-[16px] font-bold text-gray-900 mb-1">Schedule Live Preview</h3>
+            <p className="text-[12px] text-gray-400 font-medium mb-6">Generated timetable structure for the day</p>
+
+            <div className="relative border-l border-gray-200 pl-6 space-y-6 my-2">
+              {generatePreviewPeriods().map((slot, index) => (
+                <div key={index} className="relative">
+                  {/* Timeline Dot */}
+                  <div className={`absolute -left-[31px] top-1.5 w-[9px] h-[9px] rounded-full border-2 bg-white ${
+                    slot.type === 'lunch' ? 'border-orange-500' :
+                    slot.type === 'break' ? 'border-emerald-500' : 'border-blue-500'
+                  }`} />
+                  
+                  {/* Slot Details Card */}
+                  <div className={`p-3.5 rounded-xl border text-[13px] font-semibold ${slot.color}`}>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-bold text-[14px]">{slot.name}</span>
+                      <span className="text-[11px] opacity-80 uppercase tracking-wider">{slot.type}</span>
+                    </div>
+                    <p className="text-[12px] font-medium opacity-90">{slot.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

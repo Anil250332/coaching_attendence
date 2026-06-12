@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  IndianRupee, 
-  CheckCircle2, 
-  Clock, 
+import {
+  IndianRupee,
+  CheckCircle2,
+  Clock,
   AlertCircle,
   Plus
 } from 'lucide-react';
-import { 
+import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
   LineChart, Line, PieChart, Pie, Cell
 } from 'recharts';
@@ -31,10 +31,10 @@ const feeCollectionData = [
 ];
 
 const courseRevenueData = [
-  { name: 'IIT-JEE', value: 124.5, color: '#3b82f6' }, // blue-500
-  { name: 'NEET', value: 89.2, color: '#10b981' }, // emerald-500
-  { name: 'SSC', value: 45.6, color: '#f59e0b' }, // amber-500
-  { name: 'Banking', value: 25.4, color: '#8b5cf6' }, // violet-500
+  { name: 'IIT-JEE', value: 124.5, color: '#3b82f6' },
+  { name: 'NEET', value: 89.2, color: '#10b981' },
+  { name: 'SSC', value: 45.6, color: '#f59e0b' },
+  { name: 'Banking', value: 25.4, color: '#8b5cf6' },
 ];
 
 const pendingPayments = [
@@ -91,7 +91,7 @@ const Fees: React.FC = () => {
           <h1 className="text-[28px] font-bold text-[#111827]">Fee Management</h1>
           <p className="text-[15px] text-gray-500 font-medium mt-1">Track payments and manage finances</p>
         </div>
-        <button 
+        <button
           onClick={() => handleRecordPayment()}
           className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-semibold text-[14px] transition-colors shadow-sm flex items-center gap-2"
         >
@@ -165,11 +165,11 @@ const Fees: React.FC = () => {
               <BarChart data={monthlyRevenueData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fontSize: 12, fill: '#6b7280' }} 
-                  tickFormatter={(value) => value === 0 ? '0' : value} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 12, fill: '#6b7280' }}
+                  tickFormatter={(value) => value === 0 ? '0' : value}
                   domain={[0, 2600000]}
                   ticks={[0, 650000, 1300000, 1950000, 2600000]}
                 />
@@ -192,7 +192,7 @@ const Fees: React.FC = () => {
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
                   <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} dy={10} />
                   <YAxis domain={[75, 95]} ticks={[75, 80, 85, 90, 95]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#6b7280' }} />
-                  <Tooltip 
+                  <Tooltip
                     contentStyle={{ borderRadius: '8px', border: '1px solid #f3f4f6', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                     labelStyle={{ fontWeight: 'bold', color: '#111827', marginBottom: '4px' }}
                   />
@@ -210,7 +210,7 @@ const Fees: React.FC = () => {
 
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Revenue by Course */}
         <div className="bg-white rounded-[20px] p-6 border border-gray-100 shadow-sm">
           <h3 className="text-[16px] font-bold text-gray-900 mb-6">Revenue by Course</h3>
@@ -231,7 +231,7 @@ const Fees: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip 
+                <Tooltip
                   formatter={(value: any) => `₹${value}L`}
                   contentStyle={{ borderRadius: '8px', border: '1px solid #f3f4f6', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
                 />
@@ -264,11 +264,11 @@ const Fees: React.FC = () => {
           </div>
           <div className="space-y-4 flex-1">
             {pendingPayments.map((payment) => (
-              <div key={payment.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl relative overflow-hidden" 
-                   style={{ backgroundColor: payment.status === 'overdue' ? '#fff5f5' : '#fffff0' }}>
+              <div key={payment.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-5 rounded-xl relative overflow-hidden"
+                style={{ backgroundColor: payment.status === 'overdue' ? '#fff5f5' : '#fffff0' }}>
                 {/* Colored Left Border indicator */}
                 <div className={`absolute left-0 top-0 bottom-0 w-1 ${payment.status === 'overdue' ? 'bg-red-500' : 'bg-amber-400'}`}></div>
-                
+
                 <div className="pl-2 flex-1">
                   <h4 className="text-[16px] font-bold text-gray-900">{payment.name}</h4>
                   <p className="text-[13px] font-medium text-gray-500 mt-1">{payment.course}</p>
@@ -276,10 +276,10 @@ const Fees: React.FC = () => {
 
                 <div className="flex flex-col sm:items-end w-full sm:w-auto relative sm:static">
                   <div className="text-left sm:text-right mb-4 sm:mb-0 sm:absolute sm:top-5 sm:right-5">
-                     <div className="text-[16px] font-bold text-gray-900">₹{payment.amount.toLocaleString('en-IN')}</div>
-                     <div className={`text-[12px] font-bold mt-0.5 ${payment.status === 'overdue' ? 'text-red-500' : 'text-amber-600'}`}>
-                       Due: {payment.dueDate}
-                     </div>
+                    <div className="text-[16px] font-bold text-gray-900">₹{payment.amount.toLocaleString('en-IN')}</div>
+                    <div className={`text-[12px] font-bold mt-0.5 ${payment.status === 'overdue' ? 'text-red-500' : 'text-amber-600'}`}>
+                      Due: {payment.dueDate}
+                    </div>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-12 w-full sm:w-auto">
@@ -289,12 +289,12 @@ const Fees: React.FC = () => {
                     <button className="bg-[#25D366] hover:bg-[#20bd5a] text-white px-4 py-2.5 rounded-lg text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center shadow-sm">
                       WhatsApp
                     </button>
-                    <button 
-                      onClick={() => handleRecordPayment({ 
-                        id: `STU-${payment.id + 1000}`, 
-                        name: payment.name, 
-                        totalAmount: payment.course.includes('IIT-JEE') ? 120000 : payment.course.includes('NEET') ? 95000 : payment.course.includes('SSC') ? 60000 : 45000, 
-                        dueAmount: payment.amount 
+                    <button
+                      onClick={() => handleRecordPayment({
+                        id: `STU-${payment.id + 1000}`,
+                        name: payment.name,
+                        totalAmount: payment.course.includes('IIT-JEE') ? 120000 : payment.course.includes('NEET') ? 95000 : payment.course.includes('SSC') ? 60000 : 45000,
+                        dueAmount: payment.amount
                       })}
                       className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg text-[13px] font-semibold transition-colors flex-1 sm:flex-none text-center shadow-sm"
                     >
@@ -337,9 +337,8 @@ const Fees: React.FC = () => {
                     </span>
                   </td>
                   <td className="py-4 px-4">
-                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[12px] font-bold ${
-                      txn.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
-                    }`}>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[12px] font-bold ${txn.status === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
+                      }`}>
                       {txn.status}
                     </span>
                   </td>
@@ -357,7 +356,7 @@ const Fees: React.FC = () => {
       </div>
 
       {/* Modals */}
-      <RecordPaymentModal 
+      <RecordPaymentModal
         isOpen={isRecordPaymentModalOpen}
         onClose={() => setIsRecordPaymentModalOpen(false)}
         defaultStudent={selectedPaymentStudent}

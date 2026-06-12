@@ -314,7 +314,7 @@ const TeacherReports: React.FC = () => {
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-sm break-words">{dl.filename}</h4>
+                  <h4 className="font-bold text-gray-800 text-sm wrap-break-word">{dl.filename}</h4>
                   <div className="flex items-center gap-1 text-[11px] text-gray-400 font-semibold mt-0.5">
                     <Clock className="w-3.5 h-3.5" />
                     <span>Generated on {dl.date}</span>

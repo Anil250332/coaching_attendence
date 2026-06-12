@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, Plus, Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface ManageBatchModalProps {
   isOpen: boolean;
   onClose: () => void;
   batchData: any;
+}
+
+interface SubjectAssignment {
+  id: string;
+  subjectName: string;
+  teacherName: string;
 }
 
 const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, batchData }) => {
@@ -17,6 +23,8 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
     teacher: ''
   });
 
+  const [subjects, setSubjects] = useState<SubjectAssignment[]>([]);
+
   useEffect(() => {
     if (batchData) {
       setFormData({
@@ -26,6 +34,32 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
         schedule: batchData.schedule,
         teacher: batchData.teacher
       });
+
+      // Initialize default subjects based on the batch course if not already present
+      if (batchData.subjects) {
+        setSubjects(batchData.subjects);
+      } else {
+        const defaultSubjects: SubjectAssignment[] = [];
+        if (batchData.course === 'IIT-JEE') {
+          defaultSubjects.push(
+            { id: 'sub-1', subjectName: 'Physics', teacherName: batchData.teacher || 'Dr. Rajesh Kumar' },
+            { id: 'sub-2', subjectName: 'Chemistry', teacherName: 'Prof. Meera Singh' },
+            { id: 'sub-3', subjectName: 'Mathematics', teacherName: 'Mr. Amit Sharma' }
+          );
+        } else if (batchData.course === 'NEET') {
+          defaultSubjects.push(
+            { id: 'sub-1', subjectName: 'Physics', teacherName: 'Dr. Rajesh Kumar' },
+            { id: 'sub-2', subjectName: 'Chemistry', teacherName: batchData.teacher || 'Prof. Meera Singh' },
+            { id: 'sub-3', subjectName: 'Biology', teacherName: 'Ms. Priya Verma' }
+          );
+        } else {
+          defaultSubjects.push(
+            { id: 'sub-1', subjectName: 'General Studies', teacherName: batchData.teacher || 'Mr. Amit Sharma' },
+            { id: 'sub-2', subjectName: 'English', teacherName: 'Ms. Priya Verma' }
+          );
+        }
+        setSubjects(defaultSubjects);
+      }
     }
   }, [batchData]);
 
@@ -36,9 +70,26 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleAddSubject = () => {
+    const newSubject: SubjectAssignment = {
+      id: Date.now().toString(),
+      subjectName: '',
+      teacherName: ''
+    };
+    setSubjects(prev => [...prev, newSubject]);
+  };
+
+  const handleRemoveSubject = (id: string) => {
+    setSubjects(prev => prev.filter(sub => sub.id !== id));
+  };
+
+  const handleSubjectChange = (id: string, key: 'subjectName' | 'teacherName', value: string) => {
+    setSubjects(prev => prev.map(sub => sub.id === id ? { ...sub, [key]: value } : sub));
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success('Batch updated successfully!');
+    toast.success('Batch & subject assignments updated successfully!');
     onClose();
   };
 
@@ -65,7 +116,7 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
         </div>
 
         {/* Scrollable Body */}
-        <div className="overflow-y-auto p-4 sm:p-6 space-y-5 custom-scrollbar">
+        <div className="overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar">
           
           {/* Batch Name */}
           <div>
@@ -137,10 +188,10 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
             />
           </div>
 
-          {/* Teacher */}
+          {/* Teacher (Primary) */}
           <div>
             <label className="block text-[14px] font-semibold text-gray-800 mb-2">
-              Teacher <span className="text-red-500">*</span>
+              Primary Coordinator / Teacher <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <select 
@@ -160,6 +211,82 @@ const ManageBatchModal: React.FC<ManageBatchModalProps> = ({ isOpen, onClose, ba
                 <ChevronDown className="w-4 h-4" />
               </div>
             </div>
+          </div>
+
+          {/* Subjects & Teachers Assignment Section */}
+          <div className="border-t border-gray-100 pt-5">
+            <div className="flex justify-between items-center mb-4">
+              <div>
+                <h3 className="text-[16px] font-bold text-gray-900">Subjects & Assigned Teachers</h3>
+                <p className="text-[12px] text-gray-500 font-medium">Assign specific teachers to individual subjects in this batch</p>
+              </div>
+              <button
+                type="button"
+                onClick={handleAddSubject}
+                className="flex items-center gap-1.5 text-[13px] font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-3.5 py-2 rounded-lg transition-colors border border-blue-100 hover:border-blue-200"
+              >
+                <Plus className="w-4 h-4" /> Add Subject
+              </button>
+            </div>
+
+            {subjects.length === 0 ? (
+              <div className="text-center py-6 border border-dashed border-gray-200 rounded-xl bg-gray-50/50">
+                <p className="text-[14px] text-gray-400 font-medium">No subjects added to this batch yet.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {subjects.map((sub) => (
+                  <div key={sub.id} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 bg-gray-50/70 p-3.5 rounded-xl border border-gray-100">
+                    {/* Subject Name Input */}
+                    <div className="flex-1">
+                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Subject Name</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="e.g. Physics, Mathematics"
+                        value={sub.subjectName}
+                        onChange={(e) => handleSubjectChange(sub.id, 'subjectName', e.target.value)}
+                        className="w-full px-3.5 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-100 outline-none transition-all text-[14px] font-semibold text-gray-800 bg-white"
+                      />
+                    </div>
+
+                    {/* Teacher Select */}
+                    <div className="flex-1">
+                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-1.5">Assign Teacher</label>
+                      <div className="relative">
+                        <select
+                          required
+                          value={sub.teacherName}
+                          onChange={(e) => handleSubjectChange(sub.id, 'teacherName', e.target.value)}
+                          className="w-full px-3.5 py-2 rounded-lg border border-gray-300 focus:border-blue-600 focus:ring-1 focus:ring-blue-100 outline-none transition-all text-[14px] font-semibold text-gray-800 bg-white cursor-pointer appearance-none"
+                        >
+                          <option value="" disabled>Select teacher</option>
+                          <option value="Dr. Rajesh Kumar">Dr. Rajesh Kumar</option>
+                          <option value="Prof. Meera Singh">Prof. Meera Singh</option>
+                          <option value="Mr. Amit Sharma">Mr. Amit Sharma</option>
+                          <option value="Ms. Priya Verma">Ms. Priya Verma</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3.5 text-gray-500">
+                          <ChevronDown className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Delete Action */}
+                    <div className="flex items-end justify-end sm:pt-5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSubject(sub.id)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2.5 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                        title="Remove Subject"
+                      >
+                        <Trash2 className="w-4.5 h-4.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
         </div>
