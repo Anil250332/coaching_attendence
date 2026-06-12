@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Plus, Trash2, CheckCircle, Save, Layers, Book, FileText, Upload, Eye, Download, X, PlusCircle } from 'lucide-react';
+import { Plus, Trash2, Layers, Book, FileText, Upload, Eye, Download, X, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Topic {

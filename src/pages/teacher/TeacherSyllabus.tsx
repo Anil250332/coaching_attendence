@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, CheckCircle, Clock, Calendar, Check, Award, ArrowLeft, Layers, Book, ChevronRight } from 'lucide-react';
+import { CheckCircle, Check, ArrowLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 interface Topic {
